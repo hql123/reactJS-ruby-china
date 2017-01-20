@@ -9,6 +9,9 @@ coverage
 # production
 build
 
+#error
+typescript
+
 # misc
 .DS_Store
 .env

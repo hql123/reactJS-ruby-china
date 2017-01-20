@@ -12,6 +12,8 @@ var publicUrl = '';
 
 module.exports = {
   entry: [
+    require.resolve('react-dev-utils/webpackHotDevClient'),
+
     paths.appIndexJs
   ],
   output: {
