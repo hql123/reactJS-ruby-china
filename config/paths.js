@@ -8,6 +8,8 @@ function resolveApp(relativePath) {
 }
 
 module.exports = {
+  target: 'http://ruby-china.local',
+  defaultHost: 'ruby-china.local',
   defaultPort: 8890,
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
@@ -18,6 +20,8 @@ module.exports = {
   appNodeModules: resolveApp('node_modules'),
   ownNodeModules: resolveApp('node_modules'),
   proxy: 'https://ruby-china.org/api/v3/*',
+  proxyTarget: 'https://ruby-china.org',
+  proxyPath: '/api/v3/*'
 };
 
 

@@ -13,7 +13,6 @@ var publicUrl = '';
 module.exports = {
   entry: [
     require.resolve('react-dev-utils/webpackHotDevClient'),
-
     paths.appIndexJs
   ],
   output: {
@@ -26,7 +25,7 @@ module.exports = {
   devtool: 'cheap-module-source-map',
   plugins: [
     new InterpolateHtmlPlugin({
-      PUBLIC_URL: publicUrl
+      PUBLIC_URL: publicUrl,
     }),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({

@@ -1,4 +1,5 @@
 process.env.NODE_ENV      = 'development';
+
 var chalk                 = require('chalk');
 
 var webpack               = require('webpack');
@@ -16,6 +17,8 @@ var pathExists            = require('path-exists');
 var config                = require('./config/webpack.config.dev');
 var paths                 = require('./config/paths');
 var DEFAULT_PORT          = paths.defaultPort;
+process.env.HOST          = paths.defaultHost;
+config.entry.unshift("webpack-dev-server/client?"+paths.target + ':' + DEFAULT_PORT,"webpack/hot/dev-server");
 
 //判断是否在终端(terminal)终端环境中执行,在命令行输入node -p -e "Boolean(process.stdout.isTTY)"
 var isInteractive         = process.stdout.isTTY;
@@ -109,36 +112,35 @@ function onProxyError(proxy) {
   }
 }
 function addMiddleware(devServer) {
-  var proxy = paths.proxy;
+  var proxy = paths.proxyTarget;
   devServer.use(historyApiFallback({
     disableDotRule: true,
-    htmlAcceptHeaders: proxy
+    htmlAcceptHeaders: proxy ?
+      ['application/json'] :
+      ['text/html', '*/*']
   }));
 
-  if (proxy) {
-    var mayProxy = /^(?!\/(index\.html$|.*\.hot-update\.json$|sockjs-node\/)).*$/;
-
-    var hpm = httpProxyMiddleware(pathname => mayProxy.test(pathname), {
-      target: proxy,
-      logLevel: 'silent',
-      onProxyReq: function(proxyReq, req, res) {
-        if (proxyReq.getHeader('origin')) {
-          proxyReq.setHeader('origin', proxy);
-        }
-      },
-      onError: onProxyError(proxy),
-      secure: false,
-      changeOrigin: true,
-      ws: true
-    });
-    devServer.use(mayProxy, hpm);
-    devServer.listeningApp.on('upgrade', hpm.upgrade);
-  }
-
-  // Finally, by now we have certainly resolved the URL.
-  // It may be /index.html, so let the dev server try serving it again.
+  var mayProxy = paths.proxyPath;
+  var hpm = httpProxyMiddleware({
+    target: proxy,
+    logLevel: 'silent',
+    onProxyReq: function(proxyReq, req, res) {
+      // Browers may send Origin headers even with same-origin
+      // requests. To prevent CORS issues, we have to change
+      // the Origin to match the target URL.
+      if (proxyReq.getHeader('origin')) {
+        proxyReq.setHeader('origin', proxy);
+      }
+    },
+    onError: onProxyError(proxy),
+    secure: false,
+    changeOrigin: true,
+    ws: true
+  });
+  devServer.use(mayProxy, hpm);
   devServer.use(devServer.middleware);
 }
+
 function runDevServer(host, port, protocol) {
   var devServer = new WebpackDevServer(compiler, {
     compress: true,
@@ -151,7 +153,7 @@ function runDevServer(host, port, protocol) {
       ignored: /node_modules/
     },
     https: protocol === "https",
-    host: host
+    host: host,
   });
 
   // Our custom middleware proxies requests to /index.html or a remote API.
