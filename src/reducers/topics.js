@@ -3,14 +3,6 @@ const initialState = {
   didInvalidate: false,
   items: []
 }
-const selectedTab = (state = 'topics', action) => {
-  switch (action.type) {
-    case 'SELECT_TAB':
-      return action.tab
-    default:
-      return state
-  }
-}
 
 const topics = (state = initialState, action) => {
   switch (action.type) {
@@ -59,4 +51,4 @@ const topicsByTab = (state = { }, action) => {
       return state
   }
 }
-module.exports = {selectedTab, topicsByTab}
+module.exports = {topicsByTab}

@@ -154,6 +154,7 @@ function runDevServer(host, port, protocol) {
     },
     https: protocol === "https",
     host: host,
+    historyApiFallback: true
   });
 
   // Our custom middleware proxies requests to /index.html or a remote API.

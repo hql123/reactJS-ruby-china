@@ -64,11 +64,15 @@ module.exports = {
       query: {
         babelrc: false,
         presets: [require.resolve('babel-preset-react-app')],
+        plugins: [
+          ['import', [{ libraryName: "antd", style: 'css' }]]
+        ],
         cacheDirectory: true
       }
     }, {
       test: /\.css$/,
       loader: 'style!css?importLoaders=1',
+      include: paths.appStyles,
     }, {
       exclude: [
         /\.html$/,

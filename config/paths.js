@@ -17,6 +17,7 @@ module.exports = {
   appIndexJs: resolveApp('src/index.js'),
   appPackageJson: resolveApp('package.json'),
   appSrc: resolveApp('src'),
+  appStyle: resolveApp('src/assets/styles'),
   appNodeModules: resolveApp('node_modules'),
   ownNodeModules: resolveApp('node_modules'),
   proxy: 'https://ruby-china.org/api/v3/*',

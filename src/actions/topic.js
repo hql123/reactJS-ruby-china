@@ -1,10 +1,4 @@
 import {fetchData} from './fetchData';
-//显示列表
-const switchTab = tab => ({
-  type: 'SELECT_TAB',
-  tab
-});
-
 //刷新列表
 const invalidateTab = tab => ({
   type: 'INVALIDATE_TAB',
@@ -26,9 +20,10 @@ const receiveTopics = (tab, json) => ({
 })
 
 //请求帖子
-const fetchTopics = (tab) => dispatch => {
+const fetchTopics = (tab, search) => dispatch => {
   dispatch(requestTopics(tab))
-  return fetchData(tab).then(response => {
+  
+  return fetchData(tab,search).then(response => {
     dispatch(receiveTopics(tab, response))
   }).catch(error => {
     dispatch({
@@ -56,14 +51,13 @@ const shouldFetchTopics = (state, tab) => {
 }
 
 //是否需要更新帖子
-const fetchTopicsIfNeeded = tab => (dispatch, getState) => {
+const fetchTopicsIfNeeded = (tab, search) => (dispatch, getState) => {
   if (shouldFetchTopics(getState(), tab)) {
-    return dispatch(fetchTopics(tab))
+    return dispatch(fetchTopics(tab, search))
   }
 }
 
 module.exports = {
-  switchTab,
   invalidateTab,
   requestTopics,
   receiveTopics,

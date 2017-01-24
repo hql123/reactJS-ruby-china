@@ -1,0 +1,49 @@
+
+#node-header{
+  background: #f9f9f9;
+  box-shadow: 0 1px 0px rgba(0,0,0,0.02);
+  margin-bottom: 15px;
+  height: 48px;
+  padding: 0 65px;
+}
+.node-filter{
+  list-style: none;
+  line-height: 40px;
+}
+.node-filter > li{
+  float: left;
+  margin: 0 15px;
+}
+.node-filter > li > a{
+  padding: 8px;
+  text-decoration: none;
+  color: #000;
+}
+.node-filter i {
+  margin-right: 5px;
+}
+
+.node-button{
+  /*margin-right: 15px;*/
+}
+.node-filter>li:active, .node-filter > .active {
+  color: #000;
+  border-bottom: 2px dotted #666666;
+}
+.node-filter>li:first-child:active{
+  border: none;
+}
+
+.main{
+  padding-right: 15px;
+  padding-left: 15px;
+  padding: 0 50px;
+  min-height: 300px;
+}
+.main-content{
+  padding: 0 15px;
+}
+.main-sider{
+  background-color: transparent;
+  flex: 0 0 300px !important;
+}
