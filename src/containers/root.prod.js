@@ -5,7 +5,9 @@ import { Router } from 'react-router'
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
-    <Router history={history} routes={routes} />
+    <Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
+    {routes}
+    </Router>
   </Provider>
 )
 

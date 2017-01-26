@@ -36,9 +36,9 @@ if (process.env.NODE_ENV !== "production") {
 module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
+  devtool: 'source-map',
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
-  devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
   entry: [
     paths.appIndexJs
@@ -114,6 +114,9 @@ module.exports = {
         query: {
           babelrc: false,
           presets: [require.resolve('babel-preset-react-app')],
+          plugins: [
+            ['import', [{ libraryName: "antd", style: 'css' }]]
+          ],
         },
         // @remove-on-eject-end
       },

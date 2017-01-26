@@ -2,6 +2,7 @@
   "name": "ruby-china",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://hql123.github.io/reactJS-ruby-china",
   "devDependencies": {
     "antd": "^2.6.4",
     "babel-cli": "^6.22.2",
@@ -17,6 +18,7 @@
     "eslint-loader": "^1.6.1",
     "eslint-plugin-react": "^6.9.0",
     "file-loader": "^0.9.0",
+    "gh-pages": "^0.12.0",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.17.1",
     "react-css-modules": "^4.1.0",
@@ -41,7 +43,9 @@
   "scripts": {
     "start": "node server.js",
     "build": "node build.js",
+    "deploy": "npm run build&&gh-pages -d build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
+  
 }
