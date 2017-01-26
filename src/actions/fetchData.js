@@ -5,6 +5,8 @@ const pathTranslate = (tag) => {
   switch(tag) {
     case '/jobs':
       return '/topics?node_id=25'
+    case '/homeland':
+      return '/topics?node_id=23'
     case '/topics/popular':
       return '/topics?type=popular'
     case '/topics/no_reply':
@@ -16,6 +18,9 @@ const pathTranslate = (tag) => {
   }
 }
 const urlTranslate = (path, search) => {
+  if (path === '/nodes') {
+    return path;
+  }
   let offset = 0;
   if (search.indexOf('page') > -1) {
     var end = new RegExp(/\d+$/);
@@ -24,8 +29,11 @@ const urlTranslate = (path, search) => {
       offset = (Number(page) - 1)*25;
     }
   }
-  if (path.indexOf('?') > 0) {
-    return path + '&offset=' + offset + '&limit=25';
+  if (search.indexOf('limit')) {
+    return path + search;
+  }
+  if (search.indexOf('?') === 0 || path.indexOf('?') > -1) {
+    return path + search + '&offset=' + offset + '&limit=25';
   }
   return path + '?offset=' + offset + '&limit=25';
 }

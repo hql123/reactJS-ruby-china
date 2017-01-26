@@ -40,10 +40,17 @@ npm run build
 ###参考文献
 ***
 [React文档](https://facebook.github.io/react/)
+<br>
 [create-react-app](https://github.com/facebookincubator/create-react-app)
+<br>
 [Redux中文文档](http://www.redux.org.cn/)
+<br>
 [moment.js文档](http://momentjs.cn/docs/)
+<br>
 [React-Route官方手册](http://www.uprogrammer.cn/react-router-cn/index.html) 
+<br>
 [Babel](http://babeljs.io/)
+<br>
 [react-router-redux](https://github.com/reactjs/react-router-redux)
+<br>
 [Ruby China API](https://ruby-china.org/api)

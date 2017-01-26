@@ -3,6 +3,11 @@ const initialState = {
   didInvalidate: false,
   items: []
 }
+const topicState = {
+  isFetching: false,
+  topic: {},
+  meta: {},
+}
 
 const topics = (state = initialState, action) => {
   switch (action.type) {
@@ -36,7 +41,30 @@ const topics = (state = initialState, action) => {
       return state
   }
 }
-
+const topic = (state = topicState, action) => {
+  switch(action.type) {
+    case 'REQUEST_TOPIC':
+      return {
+        ...state,
+        isFetching: true,
+      }
+    case 'RECEIVE_TOPIC_SUCCESS':
+      return {
+        ...state,
+        isFetching: false,
+        topic: action.topic,
+        meta: action.meta,
+      }
+    case 'RECEIVE_TOPIC_FAILURE':
+      return {
+        ...state,
+        isFetching: false,
+        err: action.error
+      }
+    default:
+      return state
+  }
+}
 const topicsByTab = (state = { }, action) => {
   switch (action.type) {
     case 'INVALIDATE_TAB':
@@ -51,4 +79,17 @@ const topicsByTab = (state = { }, action) => {
       return state
   }
 }
-module.exports = {topicsByTab}
+const getTopic = (state = { }, action) => {
+  switch (action.type) {
+    case 'RECEIVE_TOPIC_SUCCESS':
+    case 'RECEIVE_TOPIC_FAILURE':
+    case 'REQUEST_TOPIC':
+      return {
+        ...state,
+        [action.topic_id]: topic(state[action.topic_id], action)
+      }
+    default:
+      return state
+  }
+}
+module.exports = {topicsByTab, getTopic}

@@ -45,7 +45,10 @@ class TopicItem extends Component {
           </div>
           <div className='topic-info'>
           <Link to={'/users/'+topic.user.id}>{topic.user.login}</Link>
-          <span> · 最后由 <Link to={'/users/'+topic.last_reply_user_id}>{topic.last_reply_user_login}</Link> 回复于 {moment(topic.replied_at).fromNow()} </span>
+          {topic.replies_count === 0
+            ? <span> · 发布于 {moment(topic.updated_at).fromNow()} </span>
+            : <span> · 最后由 <Link to={'/users/'+topic.last_reply_user_id}>{topic.last_reply_user_login}</Link> 回复于 {moment(topic.replied_at).fromNow()} </span>
+          }
           </div>
           
         </div>

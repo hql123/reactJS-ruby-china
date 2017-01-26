@@ -21,6 +21,7 @@
   vertical-align: top;
   overflow: hidden;
   float: left;
+  width: 80%;
 }
 .topic a{
   text-decoration: none;
@@ -56,4 +57,98 @@
   background-color: #fafafa;
   border-top: 1px solid #eee;
   margin: 0 -15px;
+}
+.topic-title {
+  overflow: hidden;
+}
+.topic-main{
+  margin: 15px 65px;
+}
+.detail-header{
+  min-height: 87px;
+  background-color: #fafafa;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  overflow: hidden;
+}
+.header-infos{
+  width: 80%;
+  float: left;
+  color: #777;
+  overflow: hidden;
+}
+.header-title{
+  font-size: 20px;
+  color: #333;
+  text-align: left;
+  line-height: 150%;
+  margin-bottom: 8px;
+  font-weight: 400;
+  overflow: hidden;
+}
+.header-title a{
+  margin-right: 5px;
+  color: #777;
+}
+.header-title a:hover{
+  text-decoration: underline;
+}
+.header-avatar{
+  float: right;
+}
+.header-info{
+  color: #c0c0c0;
+  font-size: 12px;
+}
+.detail-body{
+  padding: 15px;
+  background-color: #fff;
+  position: relative;
+  letter-spacing: .03em;
+  line-height: 1.8em;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  color: #000;
+}
+.detail-body p {
+  font-size: 14px;
+  line-height: 1.5em;
+  margin-bottom: 16px;
+}
+.markdown h1 {
+  font-size: 20px !important;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 15px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  color: #111;
+}
+.markdown img{
+  width: 100%;
+}
+.markdown h2, .markdown h3, .markdown h4 {
+  text-align: left;
+  font-weight: bold;
+  font-size: 16px !important;
+  line-height: 100%;
+  margin: 0;
+  color: #555;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+.detail-footer{
+  padding: 6px 15px;
+  background-color: #fafafa;
+  border-top: 1px solid #eee;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+.topic-replies{
+  margin: 15px 0;
+}
+.replies-header{
+  background-color: #fafafa;
+  padding: 6px 15px;
 }

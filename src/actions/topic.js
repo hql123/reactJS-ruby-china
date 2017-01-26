@@ -10,6 +10,10 @@ const requestTopics = tab => ({
   type: 'REQUEST_TOPICS',
   tab
 })
+const requestTopic = topic_id => ({
+  type: 'REQUEST_TOPIC',
+  topic_id
+})
 
 //接收帖子列表
 const receiveTopics = (tab, json) => ({
@@ -19,10 +23,17 @@ const receiveTopics = (tab, json) => ({
   receivedAt: Date.now()
 })
 
+const receiveTopic = (topic_id, json) => ({
+  type: 'RECEIVE_TOPIC_SUCCESS',
+  topic_id,
+  topic: json.topic,
+  meta: json.meta,
+  receivedAt: Date.now()
+})
+
 //请求帖子
 const fetchTopics = (tab, search) => dispatch => {
   dispatch(requestTopics(tab))
-  
   return fetchData(tab,search).then(response => {
     dispatch(receiveTopics(tab, response))
   }).catch(error => {
@@ -33,6 +44,19 @@ const fetchTopics = (tab, search) => dispatch => {
     
   })
   
+}
+
+const fetchTopic = (topic_id) => dispatch => {
+  dispatch(requestTopic(topic_id))
+  return fetchData('/topics/'+topic_id).then(response => {
+    dispatch(receiveTopic(topic_id, response))
+  }).catch(error => {
+    dispatch({
+      type: 'RECEIVE_TOPIC_FAILURE',
+      error: error,
+    })
+    
+  })
 }
 
 
@@ -50,10 +74,27 @@ const shouldFetchTopics = (state, tab) => {
   return topics.didInvalidate
 }
 
+const shouldFetchTopic = (state, topic_id) => {
+  const topic = state.getTopic[topic_id]
+  if (!topic) {
+    return true
+  }
+  //对象存在且正在获取新数据中
+  if (topic.isFetching) {
+    return false
+  }
+  return true
+}
+
 //是否需要更新帖子
 const fetchTopicsIfNeeded = (tab, search) => (dispatch, getState) => {
   if (shouldFetchTopics(getState(), tab)) {
     return dispatch(fetchTopics(tab, search))
+  }
+}
+const fetchTopicIfNeeded = (topic_id) => (dispatch, getState) => {
+  if (shouldFetchTopic(getState(), topic_id)) {
+    return dispatch(fetchTopic(topic_id))
   }
 }
 
@@ -62,5 +103,9 @@ module.exports = {
   requestTopics,
   receiveTopics,
   fetchTopics,
-  fetchTopicsIfNeeded
+  fetchTopicsIfNeeded,
+  requestTopic,
+  receiveTopic,
+  fetchTopic,
+  fetchTopicIfNeeded,
 }

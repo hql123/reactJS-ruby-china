@@ -3,11 +3,13 @@ import { connect } from 'react-redux'
 import { Menu, Form, Icon, Input } from 'antd'
 import { Link } from 'react-router'
 import '../assets/styles/header.css'
+import { fetchNodesIfNeeded } from '../actions'
 const FormItem = Form.Item;
 
 class Header extends Component {
   static propTypes = {
     pathname: PropTypes.string.isRequired,
+    fetchNodesIfNeeded: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props);
@@ -22,22 +24,20 @@ class Header extends Component {
   }
   
   getCurrent(pathname){
-    switch(pathname) {
-      case '/topics':
-      case '/topics/popular':
-      case '/topics/no_reply':
-      case '/topics/last':
-        return '/topics';
-      default :
-        return pathname;
+    if (pathname.indexOf('topics') > -1) {
+      return '/topics';
     }
+    return pathname;
+  }
+  componentDidMount() {
+    const { fetchNodesIfNeeded } = this.props
+    fetchNodesIfNeeded();
   }
   
   componentWillReceiveProps(nextProps) {
     if (this.getCurrent(nextProps.pathname) !== this.state.current) {
-      
       this.setState({
-        current: nextProps.pathname,
+        current: this.getCurrent(nextProps.pathname),
       })
     }
   }
@@ -98,8 +98,8 @@ class Header extends Component {
           <Menu.Item key="/jobs">
             <Link to="/jobs">招聘</Link>
           </Menu.Item>
-          <Menu.Item key="gems">
-            Gems
+          <Menu.Item>
+            <a href="https://gems.ruby-china.org" target="_blank" rel="noopener">Gems</a>
           </Menu.Item>
         </Menu>
       </div>
@@ -107,14 +107,15 @@ class Header extends Component {
   }
 }
 const mapStateToProps = (state, props) => {
+  const {pathname} = state.routing.locationBeforeTransitions;
   return {
-    pathname: state.routing.locationBeforeTransitions.pathname,
+    pathname,
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    
+    fetchNodesIfNeeded: () => dispatch(fetchNodesIfNeeded())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Header)

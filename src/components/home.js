@@ -1,44 +1,118 @@
 import React, { Component, PropTypes } from 'react'
-import { Layout, Button, Icon } from 'antd';
+import { Layout, Button, Icon, Modal } from 'antd';
 import { connect } from 'react-redux'
 import {Link} from 'react-router';
 import  Topics  from './topics';
 import  Siderbar  from './siderbar';
-
+import  ReactMarkdown from 'react-markdown';
 const { Header, Content, Sider } = Layout;
 import '../assets/styles/home.css'
-
+import Node from './nodeItem';
 
 class Home extends Component {
   static propTypes = {
     pathname: PropTypes.string.isRequired,
+    nodes: PropTypes.array.isRequired,
   }
   constructor(props) {
     super(props);
     this.state = {
       current: this.props.pathname,
+      nodes: this.props.nodes,
+      node: {},
+      visible: false,
+      node_id: Number(this.props.node_id),
     };
+    this.handleClick = this.handleClick.bind(this);
   }
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.pathname !== this.state.current) {
-      this.setState({
-        current: nextProps.pathname,
-      })
+  
+  handleClick() {
+    this.setState({
+      visible: !this.state.visible,
+    });
+  }
+  componentDidMount() {
+    const {pathname, node_id, nodes} = this.props;
+    let node;
+    if (Number(node_id) > 0) {
+      node = nodes.find(item => item.id === Number(node_id))
     }
+    if (pathname === '/jobs') {
+      node = nodes.find(item => item.id === 25)
+    }
+    if (pathname === '/homeland') {
+      node = nodes.find(item => item.id === 23)
+    }
+    this.setState({
+      current: pathname,
+      nodes: nodes,
+      node: node,
+      node_id: Number(node_id),
+      visible: false,
+    });
+    
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if ((nextProps.nodes.length > 0 && nextProps.nodes.length !== this.state.nodes.length) || nextProps.pathname !== this.state.current || Number(nextProps.node_id) !== this.state.node_id) {
+      const {pathname, node_id, nodes} = nextProps;
+      let node;
+      if (Number(node_id) > 0) {
+        node = nodes.find(item => item.id === Number(node_id))
+      }
+      if (pathname === '/jobs') {
+        node = nodes.find(item => item.id === 25)
+      }
+      if (pathname === '/homeland') {
+        node = nodes.find(item => item.id === 23)
+      }
+      this.setState({
+        nodes: nextProps.nodes,
+        node: node,
+        node_id: Number(Number(node_id)),
+      });
+      if (nextProps.pathname !== this.state.current || Number(node_id) !== this.state.node_id) {
+        this.setState({
+          current: nextProps.pathname,
+          visible: false,
+        })
+      }
+    }
+    
   }
   
   render() {
+    let header = (
+      this.state.current.indexOf('topics') > -1 && this.state.node_id === 0
+      ? <Header id="node-header">
+        <ul className="node-filter">
+          <li><Button type="default" className="node-button" onClick={this.handleClick}>所有节点<Icon type="right" /></Button></li>
+          <li className={ this.state.current === '/topics' ? 'active' : '' } ><Link to='/topics'>默认</Link></li>
+          <li className={ this.state.current === '/topics/popular' ? 'active' : '' } ><Link to='/topics/popular' ><Icon type="smile-o" />优质帖子</Link></li>
+          <li className={ this.state.current === '/topics/no_reply' ? 'active' : '' }><Link to='/topics/no_reply' >无人问津</Link></li>
+          <li className={ this.state.current === '/topics/last' ? 'active' : '' } ><Link to='/topics/last' >最新发布</Link></li>
+        </ul>
+        </Header>
+      : (this.state.current === '/jobs' || this.state.current === '/homeland' || this.state.node_id > 0
+        ? <div className="node-panel">
+            <div className="node-title">{this.state.node ? this.state.node.name : ''}<span style={{fontSize: '14px', color: '#999', marginLeft: '10px'}}>共有{this.state.node ? this.state.node.topics_count : 0}个讨论主题</span></div>
+            <div className="node-summry">
+            <ReactMarkdown source={this.state.node && this.state.node.summary ? this.state.node.summary : ''} />
+            </div>
+          </div>
+        : ''
+        )
+     
+    );
+    let nodes = this.state.nodes.group(item => item.section_name);
     return (
       <Layout>
-      <Header id="node-header">
-      <ul className="node-filter">
-        <li><Button type="default" className="node-button">所有节点<Icon type="right" /></Button></li>
-        <li className={ this.state.current === '/topics' ? 'active' : '' } ><Link to='/topics'>默认</Link></li>
-        <li className={ this.state.current === '/topics/popular' ? 'active' : '' } ><Link to='/topics/popular' ><Icon type="smile-o" />优质帖子</Link></li>
-        <li className={ this.state.current === '/topics/no_reply' ? 'active' : '' }><Link to='/topics/no_reply' >无人问津</Link></li>
-        <li className={ this.state.current === '/topics/last' ? 'active' : '' } ><Link to='/topics/last' >最新发布</Link></li>
-      </ul>
-      </Header>
+      {header}
+      <Modal width='50%' title="选择话题节点" visible={this.state.visible}  onCancel={this.handleClick} footer="">
+        {nodes.map((node, i) =>
+          <Node key={i} node={node} />
+        )}
+      </Modal>
       <Layout className="main">
         <Content className="main-content"><Topics /></Content>
         <Sider className="main-sider"><Siderbar /></Sider>
@@ -48,17 +122,28 @@ class Home extends Component {
     )
   }
 }
-const mapStateToProps = (state, props) => {
 
+const mapStateToProps = (state, props) => {
+  const {pathname, query} = state.routing.locationBeforeTransitions;
+  const {nodesFetchState} = state
+  const node_id = query.node_id || 0
+  const {
+    items:nodes,
+  } = nodesFetchState['nodes'] || {
+    items: []
+  }
   return {
-    pathname: state.routing.locationBeforeTransitions.pathname,
+    pathname,
+    query,
+    nodes,
+    node_id,
   }
 }
 
 const mapDispatchToProps = (dispatch, props) => {
   return {
-    
   }
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
