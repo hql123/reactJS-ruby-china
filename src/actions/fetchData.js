@@ -27,13 +27,18 @@ const urlTranslate = (path, search) => {
     const page = end.exec(search)[0];
     if (Number(page) > 1) {
       offset = (Number(page) - 1)*25;
+    }else{
+      offset = 0;
     }
   }
-  if (search.indexOf('limit')) {
+  if (search.indexOf('limit') > -1) {
     return path + search;
   }
-  if (search.indexOf('?') === 0 || path.indexOf('?') > -1) {
+  if (search.indexOf('?') > -1 && path.indexOf('?') === -1) {
     return path + search + '&offset=' + offset + '&limit=25';
+  }
+  if (path.indexOf('?') > -1) {
+    return path + '&offset=' + offset + '&limit=25';
   }
   return path + '?offset=' + offset + '&limit=25';
 }

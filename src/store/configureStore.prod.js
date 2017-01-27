@@ -2,8 +2,9 @@
 import { createStore, applyMiddleware } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
-const middlewares = [thunk];
 
+import { routerMiddleware, browserHistory } from 'react-router-redux'
+const middlewares = [thunk, routerMiddleware(browserHistory)];
 const configureStore = initialState => createStore(
   rootReducer,
   initialState,

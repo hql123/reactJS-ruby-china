@@ -57,9 +57,12 @@ class ReplyItem extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-
+  let {pathname, hash} = state.routing.locationBeforeTransitions;
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+  }
   return {
-    pathname: state.routing.locationBeforeTransitions.pathname,    
+    pathname,    
   }
 }
 

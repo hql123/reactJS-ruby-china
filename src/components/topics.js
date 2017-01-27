@@ -26,11 +26,31 @@ class Topics extends Component {
     this.handleChangePage = this.handleChangePage.bind(this);
   }
   handleChangePage(page){
-    const { pathname,query } = this.props
-    browserHistory.push({
-      pathname: pathname,
-      query: { ...query, page: page }
-    });
+    const { pathname,query, hash } = this.props
+    if (hash.indexOf('#') > -1) {
+      let hashGroup = hash;
+      if (hash.indexOf('?') > -1) {
+        if (hash.indexOf('page') > -1) {
+          hashGroup = hashGroup.split('page=')[0] + 'page=' + page;
+        }else{
+          hashGroup += '&page='+page;
+        }
+        
+      }else{
+        hashGroup += '?page='+page;
+      }
+
+      browserHistory.push({
+        hash: hashGroup,
+      });
+    }else{
+      browserHistory.push({
+        pathname: pathname,
+        query: { ...query, page: page }
+      });
+    }
+
+    
   }
   componentDidMount() {
     const { fetchTopicsIfNeeded, search, invalidateTab } = this.props
@@ -72,9 +92,16 @@ class Topics extends Component {
   }
 }
 const mapStateToProps = (state, ownProps) => {
-  const {pathname, search, query} = state.routing.locationBeforeTransitions;
-  const page = query.page || 1
-  const node_id = query.node_id || 0
+  let {pathname, search, query, hash} = state.routing.locationBeforeTransitions;
+  let page = query.page || 1
+  let node_id = query.node_id || 0
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+    page = hash.indexOf('page=') > -1 ? hash.split('page=')[1] : page
+    node_id = hash.indexOf('node_id=') > -1 ? hash.split('node_id=')[1].split('&')[0] : node_id
+    search = hash.indexOf('?') > -1 ? '?' + hash.split('?')[1] : ''
+  }
+
   const {topicsByTab} = state
   const {
     isFetching,
@@ -88,9 +115,9 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     pathname,
+    hash,
     page,
     node_id,
-    query,
     search,
     topics,
     isFetching,

@@ -1,13 +1,12 @@
 import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import routes from '../config/route'
-import { Router } from 'react-router'
+import { Router, hashHistory } from 'react-router'
 
 const Root = ({ store, history }) => (
   <Provider store={store}>
-    <Router history={history} onUpdate={() => window.scrollTo(0, 0)}>
-    {routes}
-    </Router>
+    <Router history={hashHistory} routes={routes} onUpdate={() => window.scrollTo(0, 0)} />
+
   </Provider>
 )
 

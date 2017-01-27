@@ -124,9 +124,14 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const {pathname, query} = state.routing.locationBeforeTransitions;
+  let {pathname, query, hash} = state.routing.locationBeforeTransitions;
+  let node_id = query.node_id || 0
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+    node_id = hash.indexOf('node_id=') > -1 ? hash.split('node_id=')[1].split('&')[0] : node_id
+  }
   const {nodesFetchState} = state
-  const node_id = query.node_id || 0
+  
   const {
     items:nodes,
   } = nodesFetchState['nodes'] || {
@@ -134,7 +139,6 @@ const mapStateToProps = (state, props) => {
   }
   return {
     pathname,
-    query,
     nodes,
     node_id,
   }

@@ -139,7 +139,10 @@ class Topic extends Component {
 
 }
 const mapStateToProps = (state, ownProps) => {
-  const {pathname} = state.routing.locationBeforeTransitions;
+  let {pathname, hash} = state.routing.locationBeforeTransitions;
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+  }
   const topic_id = pathname.slice(8);
   const {getTopic, repliesByTopic} = state
   const {

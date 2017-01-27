@@ -107,7 +107,10 @@ class Header extends Component {
   }
 }
 const mapStateToProps = (state, props) => {
-  const {pathname} = state.routing.locationBeforeTransitions;
+  let {pathname, hash} = state.routing.locationBeforeTransitions;
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+  }
   return {
     pathname,
   }

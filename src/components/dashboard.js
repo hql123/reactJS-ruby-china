@@ -139,7 +139,12 @@ class Dashboard extends Component {
 
 
 const mapStateToProps = (state, ownProps) => {
-  const {pathname, search} = state.routing.locationBeforeTransitions;
+  let {pathname, search, hash} = state.routing.locationBeforeTransitions;
+  if (hash.indexOf('#') > -1) {
+    pathname = hash.slice(1).split('?')[0];
+    search = hash.indexOf('?') > -1 ? '?' + hash.split('?')[1] : ''
+  }
+
   const {topicsByTab, nodesFetchState} = state
   const {
     isFetching,
