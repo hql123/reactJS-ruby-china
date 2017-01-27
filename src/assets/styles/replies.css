@@ -16,6 +16,7 @@
   vertical-align: top;
   overflow: hidden;
   float: left;
+  width: 80%;
 }
 .reply .content{
   color: #333;

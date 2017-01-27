@@ -37,6 +37,9 @@ const urlTranslate = (path, search) => {
   if (search.indexOf('?') > -1 && path.indexOf('?') === -1) {
     return path + search + '&offset=' + offset + '&limit=25';
   }
+  if (search.indexOf('?') > -1 && path.indexOf('?') > -1) {
+    return path + '&' + search.split('?')[1] + '&offset=' + offset + '&limit=25';
+  }
   if (path.indexOf('?') > -1) {
     return path + '&offset=' + offset + '&limit=25';
   }

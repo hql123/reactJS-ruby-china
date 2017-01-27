@@ -117,6 +117,7 @@ const mapStateToProps = (state, ownProps) => {
     pathname,
     hash,
     page,
+    query,
     node_id,
     search,
     topics,
