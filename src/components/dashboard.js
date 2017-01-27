@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import '../assets/styles/dashboard.css'
-import {Row, Col, Icon} from 'antd'
 import {Link} from 'react-router'
 import { fetchTopicsIfNeeded, invalidateTab } from '../actions'
-import { Spin, Alert } from 'antd';
 import TopicItem from './topicItem.js';
 import Node from './nodeItem';
-
+import { Grid, Row, Col, Panel, ProgressBar, Alert } from 'react-bootstrap';
+import FontAwesome from 'react-fontawesome';
 const hotCities = ["北京", "上海", "深圳", "杭州", "成都", "广州", "武汉", "西安", "南京", "大连", "长沙", "苏州"];
 class Dashboard extends Component {
   static propTypes = {
@@ -55,84 +54,78 @@ class Dashboard extends Component {
     const errorMsg = error;
     let nodes = this.state.nodes.group(item => item.section_name);
     const container = (
-      isEmpty || errorMsg ? <Alert message="数据加载失败，真相只有一个！" description="请检查你的网络状态" type="info" />
+      isEmpty || errorMsg ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
         : topics.map((topic, i) =>
           i < 20 
-          ? <Col key={'topic_' + i} span={12} className="topics_group">
+          ? <Col key={'topic_' + i} md={6} className="topics_group">
               <TopicItem topic={topic} />
             </Col>
           : '')
           
     );
     return (
-      <div className="dashboard">
+      <Grid>
+        <Panel className="dashboard">
+          <div className="dashboard-main">
+            <div className="dashboard-logo"><img alt="dashboard-logo" src="https://twemoji.b0.upaiyun.com/2/svg/1f381.svg" style={{width: '55px'}} /></div>
+            <div className="dashboard-tip">
+              <div style={{fontSize: '15px'}}>Ruby China 官方 <a href="https://gems.ruby-china.org" target="_blank">RubyGems 镜像</a>、<Link to="/wiki/ruby-mirror">Ruby 镜像</Link> 正式上线！</div>
+              <div><code style={{padding: '4px 10px'}}>gem source -a https://gems.ruby-china.org</code></div>
+            </div>
+          </div>
+        </Panel>
         <Row className="dashboard-row">
-          <Col span={24}>
-            <div className="dashboard-main">
-              <div className="dashboard-logo"><img alt="dashboard-logo" src="https://twemoji.b0.upaiyun.com/2/svg/1f381.svg" style={{width: '55px'}} /></div>
-              <div className="dashboard-tip">
-                <div style={{fontSize: '15px'}}>Ruby China 官方 <a href="https://gems.ruby-china.org" target="_blank">RubyGems 镜像</a>、<Link to="/wiki/ruby-mirror">Ruby 镜像</Link> 正式上线！</div>
-                <div><code style={{padding: '4px 10px'}}>gem source -a https://gems.ruby-china.org</code></div>
-              </div>
-            </div>
+          <Col md={3}>
+          <Link to="/topics">
+            <Panel footer={<div>Ruby社区<FontAwesome name='arrow-right' /></div>}>
+              <FontAwesome name="comments-o" style={{color: '#F86334'}}/>
+            </Panel>
+          </Link>
+          </Col>
+          <Col md={3}>
+          <Link to="/wiki">
+            <Panel footer={<div>技术文档<FontAwesome name='arrow-right'/></div>}>
+              <FontAwesome name="support" style={{color: '#FFD52F'}}/>
+            </Panel>
+          </Link>
+          </Col>
+          <Col md={3}>
+          <Link to="/jobs">
+            <Panel footer={<div>招聘与求职<FontAwesome name='arrow-right'/></div>}>
+              <FontAwesome name="users" style={{color: '#317DDA'}}/>
+            </Panel>
+            
+          </Link>
+          </Col>
+          <Col md={3}>
+          <Link to="/topics/popular">
+            <Panel footer={<div>精华文章<FontAwesome name='arrow-right'/></div>}>
+              <FontAwesome name="diamond" style={{color: '#3BD54E'}}/>
+            </Panel>
+          </Link>
           </Col>
         </Row>
-        <Row className="dashboard-row" style={{background: 'transparent'}} type="flex" justify="space-between">
-          <Col span={5}>
-            <div className="dashboard-item">
-              <div className="dashboard-item-body"><Link to="/topics"><Icon type="message" style={{color: '#F86334'}}/></Link></div>
-              <div className="dashboard-item-font"><Link to="/topics">Ruby 社区<Icon type="arrow-right"/></Link></div>
-            </div>
-          </Col>
-          <Col span={5}>
-            <div className="dashboard-item">
-              <div className="dashboard-item-body"><Link to="/wiki"><Icon type="chrome" style={{color: '#FFD52F'}}/></Link></div>
-              <div className="dashboard-item-font"><Link to="/wiki">技术文档<Icon type="arrow-right" /></Link></div>
-            </div>
-          </Col>
-          <Col span={5}>
-            <div className="dashboard-item">
-              <div className="dashboard-item-body"><Link to="/jobs"><Icon type="team" style={{color: '#317DDA'}}/></Link></div>
-              <div className="dashboard-item-font"><Link to="/jobs">招聘与求职<Icon type="arrow-right"/></Link></div>
-            </div>
-          </Col>
-          <Col span={5}>
-            <div className="dashboard-item">
-              <div className="dashboard-item-body"><Link to="/topics/popular"><Icon type="smile-o" style={{color: '#3BD54E'}}/></Link></div>
-              <div className="dashboard-item-font"><Link to="/">精华文章<Icon type="arrow-right"/></Link></div>
-            </div>
-          </Col>
-        </Row>
-        <Row className="dashboard-row">
-          <Col span={24}>
-            <div className="panel-title">社区精华帖</div>
-            <Row className="panel-body">
-              <Spin spinning={this.state.isFetching} tip="Loading...">{container}</Spin>
-            </Row>
-            <Row className="panel-footer">
-            <Link to='/topics/popular' >查看更多精华帖...</Link>
-            </Row>
-          </Col>
-        </Row>
-        <Row className="dashboard-row">
-          <Col span={24}>
-            <div className="panel-title">讨论节点分类导航</div>
-            <div className="panel-body">
-            {nodes.map((node, i) =>
-              <Node key={'node_'+i} node={node} />
-            )}
-            </div>
-          </Col>
-        </Row>
-        <Row className="dashboard-row">
-          <Col span={24}>
-            <div className="panel-title">热门城市</div>
-            <div className="panel-body city-list">
-            {hotCities.map((city, i) => <span key={i}><Link to={"/users/city/"+city}>{city}</Link></span>)}
-            </div>
-          </Col>
-        </Row>
-      </div>
+        <Panel className="topics-panel" header="社区精华帖" footer={<Link to='/topics/popular'>查看更多精华帖...</Link>}>
+          <Row className="dashboard-topics">
+          {this.state.isFetching
+            ? <div style={{width: '80%', margin: '0 auto'}}><ProgressBar active now={45} label="努力加载中"/></div>
+            : container
+          }
+          </Row>
+          
+        </Panel>
+        <Panel header="讨论节点分类导航">
+          <Row>
+          {nodes.map((node, i) =>
+            <Node key={'node_'+i} node={node} />
+          )}
+          </Row>
+        </Panel>
+        <Panel header="热门城市" >
+          <div className="city-list">{hotCities.map((city, i) => <span key={i}><Link to={"/users/city/"+city}>{city}</Link></span>)}</div>
+        </Panel>
+                
+      </Grid>
     )
   }
 }

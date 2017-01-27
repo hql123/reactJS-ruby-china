@@ -64,9 +64,6 @@ module.exports = {
       query: {
         babelrc: false,
         presets: [require.resolve('babel-preset-react-app')],
-        plugins: [
-          ['import', [{ libraryName: "antd", style: 'css' }]]
-        ],
         cacheDirectory: true
       }
     }, {

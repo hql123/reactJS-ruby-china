@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert } from 'antd';
+import {Alert} from 'react-bootstrap'
 
 class Wiki extends Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class Wiki extends Component {
   render() {
     return (
       <div>
-        <Alert message="功能尚未开发！" description="客官请稍等几年~" type="info" />
+        <Alert bsStyle="info" ><strong>功能正在开发！</strong>啦啦啦</Alert>
       </div>
     );
   }

@@ -2,10 +2,9 @@ import React, { Component, PropTypes } from 'react'
 import '../assets/styles/topics.css'
 import { connect } from 'react-redux'
 import { fetchTopicsIfNeeded, invalidateTab } from '../actions'
-import { Spin, Alert, Pagination } from 'antd';
 import TopicItem from './topicItem.js';
 import { browserHistory } from 'react-router'
-
+import {Pagination, ProgressBar, Row, Col, Alert} from 'react-bootstrap'
 class Topics extends Component {
   static propTypes = {
     pathname: PropTypes.string.isRequired,
@@ -77,17 +76,22 @@ class Topics extends Component {
     const isEmpty = topics.length === 0;
     const errorMsg = error;
     const container = (
-      isEmpty || errorMsg ? <Alert message="数据加载失败，真相只有一个！" description="请检查你的网络状态" type="warning" />
-        : <div className="topics">
+      isEmpty || errorMsg ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
+        : <Col className="topics" md={12}>
             {topics.map((topic, i) =>
               <TopicItem key={i} topic={topic} />
             )}
-            <div className="topics-pagination"><Pagination onChange={this.handleChangePage} total={700} current={this.state.page} /></div>
-          </div>
+            <div className="topics-pagination"><Pagination  prev="← 上一页" next="下一页 →" onSelect={this.handleChangePage} maxButtons={5} items={70} activePage={this.state.page} /></div>
+          </Col>
       
     );
     return (
-      <Spin spinning={isFetching} tip="Loading...">{container}</Spin>
+      <Row>
+      {isFetching
+        ? <div style={{width: '80%', margin: '0 auto'}}><ProgressBar active now={45} label="努力加载中"/></div>
+        : container
+      }
+      </Row>
     );
   }
 }

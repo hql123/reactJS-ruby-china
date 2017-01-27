@@ -1,31 +1,61 @@
 
+
+.node-filter{
+  
+}
 #node-header{
   background: #f9f9f9;
-  box-shadow: 0 1px 0px rgba(0,0,0,0.02);
-  margin-bottom: 15px;
-  height: 48px;
-  padding: 0 65px;
+  margin: -14px 0 15px;
+  height: 50px;
 }
-.node-filter{
-  list-style: none;
-  line-height: 40px;
+@media screen {
+  
+  .node-filter > li{
+    margin: auto 15px;
+    padding: 3px;
+  }
+  .node-filter > li > a{
+    text-decoration: none;
+    color: #606060 !important;
+    font-weight: 400;
+  }
 }
-.node-filter > li{
-  float: left;
-  margin: 0 15px;
+@media (max-width: 768px) {
+  
+  .node-filter > li{
+    margin: auto 5px;
+    
+  }
+  .node-filter > li > a{
+    padding-left: 2px;
+    padding-right:0;
+    text-decoration: none;
+    color: #606060 !important;
+    font-weight: 400;
+  }
 }
-.node-filter > li > a{
-  padding: 8px;
-  text-decoration: none;
-  color: #000;
+
+
+.node-filter > li > a:hover{
+  color: #000 !important;
+  padding-bottom: 5px;
+}
+.node-filter > .active a{
+  color: #000 !important;
+  padding-bottom: 5px;
 }
 .node-filter i {
   margin-right: 5px;
 }
 
 .node-button{
-  /*margin-right: 15px;*/
+  margin: 6px 0;
+  text-align: center;
 }
+.node-button span{
+  padding-left: 5px;
+}
+
 .node-filter>li:active, .node-filter > .active {
   color: #000;
   border-bottom: 2px dotted #666666;
@@ -48,8 +78,8 @@
   flex: 0 0 300px !important;
 }
 .node-panel{
-  padding: 8px 75px;
   background-color: #f9f9f9;
+  margin-top: -15px;
   margin-bottom: 15px;
   box-shadow: 0 1px 0px rgba(0,0,0,0.02);
 }
@@ -69,10 +99,10 @@
   text-decoration: underline;
 }
 .node-summry p:first-child{
-  padding-bottom: 15px;
+  padding-bottom: 5px;
 }
 .node-summry p:last-child{
-  padding-top: 15px;
+  padding-top: 5px;
 }
 .node-item{
   margin-bottom: 10px;

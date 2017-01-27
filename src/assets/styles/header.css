@@ -10,6 +10,7 @@
 
 
 .header-brand{
+  border-bottom: 3px solid #FFF;
   margin: 0;
   text-align: center;
   color: #666;
@@ -24,45 +25,56 @@
   font-weight: 700;
   color: #EB5424;
 }
-#nav > .ant-menu-item-selected,  #nav > .ant-menu-item-active{
-  border-bottom: 2px solid #EB5424;
+#navbar{
+  background-color: #fff;
 }
-#nav > .ant-menu-item > a:hover, #nav > .ant-menu-item-selected > a {
-  color: #EB5424;
+#nav > li >a {
+  color: #333;
+  
+  padding-bottom: 12px;
 }
-#nav > .ant-menu-item-selected > a, #nav > .ant-menu-item-selected > a:hover {
-  color: #EB5424;
+#nav > li > a:hover {
+  border-bottom: 3px solid #EB5424;
+  padding-bottom: 12px;
+}
+.nav > li > a:hover{
+  color: #EB5424 !important;
+  background-color: transparent !important;
+  padding-bottom: 12px;
+}
+.nav > .active > a {
+  color: #EB5424 !important;
+  background-color: transparent !important;
+  padding-bottom: 12px;
+}
+#nav > .active > a {
+  border-bottom: 3px solid #EB5424 !important;
+  padding-bottom: 12px;
 }
 .header-others,.header-user-group {
   margin: 0;
   float: right;
 }
-.header-search .ant-input-group-addon {
-  background-color: #fff;
-  border: none;
-  width: 20px;
-  height: 20px;
-  line-height: 20px;
+@media screen {
+  .header-search{
+    display: block;
+  }
 }
-.header-search .ant-input-group-addon > a, .header-search .ant-input-group-addon > a:hover{
-  color: #000;
-
+@media(max-width: 992px){
+  .header-search{
+    display: none;
+  }
 }
-.search-input, .search-input:hover, .search-input:focus{
+.header-search input, .header-search input:hover, .header-search input:focus {
+  background-color: transparent;
   border: none;
   box-shadow: none;
 }
+.header-search  > a, .header-search > a:hover{
+  color: #000;
+  vertical-align: middle;
+}
+.header-search > a{
+  margin-right: 5px;
+}
 
-.header-user-group {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.header-user-group > li {
-  min-width: 50px;
-  list-style: none;
-}
-.form-group {
-  margin-right: 25px;
-}

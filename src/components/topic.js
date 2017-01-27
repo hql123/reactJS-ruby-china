@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Row, Col, Icon, Spin, Alert} from 'antd'
 import {Link} from 'react-router'
 import {fetchTopicIfNeeded, fetchRepliesIfNeeded, invalidateReplies} from '../actions'
 import SiderBar from './siderbar'
@@ -8,6 +7,9 @@ import '../assets/styles/topics.css'
 import moment from 'moment'
 import  ReactMarkdown from 'react-markdown';
 import ReplyItem from './replyItem.js';
+import {Alert, ProgressBar, Row, Col, Grid, Panel} from 'react-bootstrap'
+import Font from 'react-fontawesome';
+
 class Topic extends Component {
   constructor(props) {
     super(props);
@@ -80,36 +82,40 @@ class Topic extends Component {
     );
     const isTopicEmpty = topic ? false : true
     const isRepliesEmpty = replies.length === 0 ? true : false;
-    const container = (
-      isTopicEmpty || topicError 
-      ? <Alert message="数据加载失败，真相只有一个！" description="请检查你的网络状态" type="warning" />
-      : <div className="topic-detail">
-          <div className="detail-header">
-            <div className="header-infos">
-              <div className="header-title"><Link to={"/topic?node_id" + topic.node_id}>{topic.node_name}</Link>{topic.title}</div>
-              <div className="header-info">
-                <Link to={topic.user ? '/users/'+topic.user.id : ''}>{topic.user ? topic.user.login : ''}</Link>
-                <span> · 发布于 {moment(topic.updated_at).fromNow()} </span>
-                {repliesUserContainer}
-                <span> · {topic.hits} 次阅读</span>
-              </div>
-            </div>
-            <div className="header-avatar">
-              <Link to={topic.user ? '/users/'+topic.user.id : ''}><img alt={topic.user? topic.user.login : ''} src={topic.user ? topic.user.avatar_url : ''} style={{width: '48px', height: '48px', borderRadius: '24px'}}/></Link>
-            </div>
-          </div>
-          <div className="detail-body markdown">
-          <article><ReactMarkdown source={topic.body ? topic.body : ''} /></article>
-          </div>
-          <div className="detail-footer">
-          <Icon type="heart" /><span> <strong>{topic.likes_count}</strong> 个赞</span>
+    const title = (
+      <div className="detail-header">
+        <div className="header-infos">
+          <div className="header-title"><Link to={"/topic?node_id" + topic.node_id}>{topic.node_name}</Link>{topic.title}</div>
+          <div className="header-info">
+            <Link to={topic.user ? '/users/'+topic.user.id : ''}>{topic.user ? topic.user.login : ''}</Link>
+            <span> · 发布于 {moment(topic.updated_at).fromNow()} </span>
+            {repliesUserContainer}
+            <span> · {topic.hits} 次阅读</span>
           </div>
         </div>
+        <div className="header-avatar">
+          <Link to={topic.user ? '/users/'+topic.user.id : ''}><img alt={topic.user? topic.user.login : ''} src={topic.user ? topic.user.avatar_url : ''} style={{width: '48px', height: '48px', borderRadius: '24px'}}/></Link>
+        </div>
+      </div>
+    );
+    const footer = (
+      <div>
+      <Font name="heart" /><span> <strong>{topic.likes_count}</strong> 个赞</span>
+      </div>
+    );
+    const container = (
+      isTopicEmpty || topicError 
+      ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
+      : <Panel className="topic-detail" header={title} footer={footer}>
+          <div className="markdown">
+          <article><ReactMarkdown source={topic.body ? topic.body : ''} /></article>
+          </div>
+        </Panel>
     );
     const repliesContainer = (
       repliesError
-      ? <Alert message="数据加载失败，真相只有一个！" description="请检查你的网络状态" type="error" />
-      : (isRepliesEmpty ? <Alert message="暂无回复" description="乳此悲桑的问题哟~" type="info" />
+      ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
+      : (isRepliesEmpty ? <Alert bsStyle="info" ><strong>暂无回复哟</strong></Alert>
         :<div className="replies">
           {replies.map((reply, i) =>
             <ReplyItem key={i} floor={i+1} reply={reply} />
@@ -118,22 +124,27 @@ class Topic extends Component {
         )
     );
     return (
-      <div className="topic-main">
+      <Grid>
       <Row>
-        <Col span={18}>
-        <Spin spinning={topicIsFetching} tip="Loading...">{container}</Spin>
+        <Col md={9}>
+        {topicIsFetching
+          ? <div style={{width: '80%', margin: '0 auto'}}><ProgressBar active now={45} label="努力加载中"/></div>
+          : container
+        }
         
         <div className="topic-replies">
           <div className="replies-header">共收到 <strong>{topic ? topic.replies_count : 0}</strong> 条回复</div>
           <div className="replies-body">
-            <Spin spinning={repliesIsFetching} tip="Loading...">{repliesContainer}</Spin>
-
+            {repliesIsFetching
+              ? <div style={{width: '80%', margin: '0 auto'}}><ProgressBar active now={45} label="努力加载中"/></div>
+              : repliesContainer
+            }
           </div>
         </div>
         </Col>
-        <Col span={5} style={{marginLeft: '30px'}}><SiderBar /></Col>
+        <Col md={3}><SiderBar /></Col>
       </Row>
-      </div>
+      </Grid>
     );
   }
 

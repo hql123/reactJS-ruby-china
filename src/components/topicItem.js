@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {Link} from 'react-router'
-import {Icon} from 'antd'
 import moment from 'moment'
 moment.locale('zh-CN');
 import '../assets/styles/topics.css'
@@ -38,7 +37,7 @@ class TopicItem extends Component {
           <span className="topic-node">{topic.node_name}</span>
           {topic.title}
           {
-            topic.excellent === 1 && <Icon type='smile-o' style={{color: 'red',marginLeft: '5px',marginRight: '5px',lineHeight: '30px'}}/>
+            topic.excellent === 1 && <div type='smile-o' style={{color: 'red',marginLeft: '5px',marginRight: '5px',lineHeight: '30px'}}/>
           }
           
           </Link>

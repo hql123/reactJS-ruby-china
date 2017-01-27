@@ -3,7 +3,7 @@ class Footer extends Component {
   
   render() {
     return (
-      <p>Ant Design ©2016 Created by Ant UED</p>
+      <p style={{textAlign: 'center'}}>Ruby China 低配山寨版 ©2017 Created By hql</p>
       
     );
   }

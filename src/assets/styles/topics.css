@@ -1,7 +1,7 @@
 .topics{
-  padding: 0 15px;
   background-color: #fff;
   min-height: 200px;
+
 }
 .topic {
   min-height: 68px;
@@ -20,8 +20,7 @@
   display: table-cell;
   vertical-align: top;
   overflow: hidden;
-  float: left;
-  width: 80%;
+  width: 10000px;
 }
 .topic a{
   text-decoration: none;
@@ -40,9 +39,11 @@
   margin-top: 0;
 }
 .topic-replies-count{
-  float: right;
+  display: table-cell;
+  text-align: right;
   padding: 15px;
   padding-right: 0;
+  width: 100px;
 }
 .span-replies{
   background-color: #CFD3E6;
@@ -53,10 +54,13 @@
   text-align: center;
 }
 .topics-pagination{
-  padding: 10px 15px;
   background-color: #fafafa;
   border-top: 1px solid #eee;
-  margin: 0 -15px;
+  margin: 0 -15px -15px;
+  padding: 0 15px;
+}
+.topics-pagination .pagination{
+  margin: 7px 0;
 }
 .topic-title {
   overflow: hidden;
@@ -65,10 +69,6 @@
   margin: 15px 65px;
 }
 .detail-header{
-  min-height: 87px;
-  background-color: #fafafa;
-  padding: 15px;
-  border-bottom: 1px solid #eee;
   overflow: hidden;
 }
 .header-infos{

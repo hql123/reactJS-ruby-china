@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react'
-import { Layout, Button, Icon, Modal } from 'antd';
 import { connect } from 'react-redux'
 import {Link} from 'react-router';
 import  Topics  from './topics';
 import  Siderbar  from './siderbar';
 import  ReactMarkdown from 'react-markdown';
-const { Header, Content, Sider } = Layout;
 import '../assets/styles/home.css'
 import Node from './nodeItem';
+import {Grid, Row, Col, Modal, Button, Panel} from 'react-bootstrap';
+import Font from 'react-fontawesome';
 
 class Home extends Component {
   static propTypes = {
@@ -84,40 +84,58 @@ class Home extends Component {
   render() {
     let header = (
       this.state.current.indexOf('topics') > -1 && this.state.node_id === 0
-      ? <Header id="node-header">
-        <ul className="node-filter">
-          <li><Button type="default" className="node-button" onClick={this.handleClick}>所有节点<Icon type="right" /></Button></li>
+      ? <div id="node-header">
+        <Grid>
+        <ul className="nav nav-pills node-filter">
+          <li><Button bsStyle="default" className="node-button" onClick={this.handleClick}>所有节点<Font name="caret-right" /></Button></li>
           <li className={ this.state.current === '/topics' ? 'active' : '' } ><Link to='/topics'>默认</Link></li>
-          <li className={ this.state.current === '/topics/popular' ? 'active' : '' } ><Link to='/topics/popular' ><Icon type="smile-o" />优质帖子</Link></li>
+          <li className={ this.state.current === '/topics/popular' ? 'active' : '' } ><Link to='/topics/popular' ><div type="smile-o" />优质帖子</Link></li>
           <li className={ this.state.current === '/topics/no_reply' ? 'active' : '' }><Link to='/topics/no_reply' >无人问津</Link></li>
           <li className={ this.state.current === '/topics/last' ? 'active' : '' } ><Link to='/topics/last' >最新发布</Link></li>
         </ul>
-        </Header>
+        </Grid>
+        </div>
       : (this.state.current === '/jobs' || this.state.current === '/homeland' || this.state.node_id > 0
-        ? <div className="node-panel">
+        ? <Panel className="node-panel">
+          <Grid>
             <div className="node-title">{this.state.node ? this.state.node.name : ''}<span style={{fontSize: '14px', color: '#999', marginLeft: '10px'}}>共有{this.state.node ? this.state.node.topics_count : 0}个讨论主题</span></div>
             <div className="node-summry">
             <ReactMarkdown source={this.state.node && this.state.node.summary ? this.state.node.summary : ''} />
             </div>
-          </div>
+          </Grid>
+          </Panel>
+          
         : ''
         )
      
     );
     let nodes = this.state.nodes.group(item => item.section_name);
     return (
-      <Layout>
+      <div>
       {header}
-      <Modal width='50%' title="选择话题节点" visible={this.state.visible}  onCancel={this.handleClick} footer="">
+      <Grid>
+      <Modal show={this.state.visible} bsSize="large" onHide={this.handleClick}>
+        <Modal.Header closeButton><Modal.Title id="contained-modal-title-lg">选择话题节点</Modal.Title></Modal.Header>
+        <Modal.Body>
         {nodes.map((node, i) =>
           <Node key={i} node={node} />
         )}
+        </Modal.Body>
+        
       </Modal>
-      <Layout className="main">
-        <Content className="main-content"><Topics /></Content>
-        <Sider className="main-sider"><Siderbar /></Sider>
-      </Layout>
-      </Layout>
+      <Row>
+        <Col md={9}>
+        <Panel>
+          <Topics />
+        </Panel>
+        </Col>
+        <Col md={3}>
+        
+          <Siderbar />
+        </Col>
+      </Row>
+      </Grid>
+      </div>
       
     )
   }

@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Menu, Form, Icon, Input } from 'antd'
+import { Navbar, FormControl, FormGroup, Glyphicon } from 'react-bootstrap'
 import { Link } from 'react-router'
 import '../assets/styles/header.css'
 import { fetchNodesIfNeeded } from '../actions'
-const FormItem = Form.Item;
 
 class Header extends Component {
   static propTypes = {
@@ -58,51 +57,36 @@ class Header extends Component {
   }
   render() {
     return (
-      <div>
-        <div className="header-logo">
-        <Link className="header-brand" to="/" ><b>Ruby</b>&nbsp;China</Link>
-        </div>
-        <div className="header-others">
-          <div className="header-search">
-            <Form inline onSubmit={this.handleSubmit} >
-              <FormItem className="form-group">
-              <Input className="search-input" addonBefore={<Link to="/"><Icon type="search" /></Link>}  placeholder="搜索本站内容" />
-              </FormItem>
-            </Form>
-          </div>
-          <div className="header-user-group" >
-            <li className="header-user-signup" onClick={this.handleClick}>
-            <Link to="/">注册</Link>
-            </li>
-            <li className="header-user-login" onClick={this.handleClick}>
-            <Link  to="/">登录</Link>
-            </li>
-          </div>
-        </div>
-        
-        <Menu selectedKeys={[this.state.current]}
-          mode="horizontal"
-          id="nav">
-          <Menu.Item key="/topics">
-            <Link to="/topics">社区</Link>
-          </Menu.Item>
-          <Menu.Item key="/wiki">
-            <Link to="/wiki">Wiki</Link>
-          </Menu.Item>
-          <Menu.Item key="/sites">
-            <Link to="/sites">酷站</Link>
-          </Menu.Item>
-          <Menu.Item key="/homeland">
-            <Link to="/homeland">Homeland</Link>
-          </Menu.Item>
-          <Menu.Item key="/jobs">
-            <Link to="/jobs">招聘</Link>
-          </Menu.Item>
-          <Menu.Item>
-            <a href="https://gems.ruby-china.org" target="_blank" rel="noopener">Gems</a>
-          </Menu.Item>
-        </Menu>
-      </div>
+      <Navbar className="navbar-fixed-top" id="navbar">
+        <Navbar.Header>
+          <Navbar.Brand>
+            <Link className="header-brand" to="/" ><b>Ruby</b>&nbsp;China</Link>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <ul id="nav" className="nav navbar-nav">
+            <li className={ this.state.current === '/topics' ? "active" : ''} ><Link to='/topics'>社区</Link></li>
+            <li className={ this.state.current === '/wiki' ? "active" : '' } ><Link to='/wiki'>Wiki</Link></li>
+            <li className={ this.state.current === '/sites' ? "active" : '' } ><Link to='/sites'>酷站</Link></li>
+            <li className={ this.state.current === '/homeland' ? "active" : '' }><Link to='/homeland'>Homeland</Link></li>
+            <li className={ this.state.current === '/jobs' ? "active" : '' } ><Link to='/jobs' >招聘</Link></li>
+            <li><a href='https://gems.ruby-china.org' target="_blank">Gems</a></li>
+          </ul>
+          <ul className="nav navbar-nav pull-right">
+            <li className={ this.state.current === '/account/signup' ? 'active' : ''} ><Link to='/account/signup'>注册</Link></li>
+            <li className={ this.state.current === '/account/signin' ? 'active' : ''} ><Link to='/account/signin'>登录</Link></li>
+          </ul>
+          <Navbar.Form pullRight>
+            <div className="header-search">
+            <Link to="/"><Glyphicon glyph="search"/></Link>
+            <FormGroup>
+              <FormControl type="text" placeholder="搜索本站内容" />
+            </FormGroup>
+            </div>
+          </Navbar.Form>
+        </Navbar.Collapse>
+      </Navbar>
     );
   }
 }
