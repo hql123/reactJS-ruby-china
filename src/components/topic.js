@@ -4,8 +4,8 @@ import {Link} from 'react-router'
 import {fetchTopicIfNeeded, fetchRepliesIfNeeded, invalidateReplies} from '../actions'
 import SiderBar from './siderbar'
 import '../assets/styles/topics.css'
+import '../assets/styles/markdown.css'
 import moment from 'moment'
-import  ReactMarkdown from 'react-markdown';
 import ReplyItem from './replyItem.js';
 import {Alert, ProgressBar, Row, Col, Grid, Panel} from 'react-bootstrap'
 import Font from 'react-fontawesome';
@@ -108,7 +108,7 @@ class Topic extends Component {
       ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
       : <Panel className="topic-detail" header={title} footer={footer}>
           <div className="markdown">
-          <article><ReactMarkdown source={topic.body ? topic.body : ''} /></article>
+          <article dangerouslySetInnerHTML={{ __html: topic.body_html}}></article>
           </div>
         </Panel>
     );
@@ -116,7 +116,7 @@ class Topic extends Component {
       repliesError
       ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
       : (isRepliesEmpty ? <Alert bsStyle="info" ><strong>暂无回复哟</strong></Alert>
-        :<div className="replies">
+        :<div className="replies markdown">
           {replies.map((reply, i) =>
             <ReplyItem key={i} floor={i+1} reply={reply} />
           )}

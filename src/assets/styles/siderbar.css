@@ -1,8 +1,18 @@
-.sider{
-  min-height: 500px;
-  margin: -15px -30px 0;
-  background-color: transparent;
-  border: none;
+@media screen {
+  .sider{
+    min-height: 500px;
+    margin: -15px -30px 0;
+    background-color: transparent;
+    border: none;
+  }
+}
+@media (max-width: 768px) {
+  .sider{
+    min-height: 500px;
+    margin: -15px -15px 0;
+    background-color: transparent;
+    border: none;
+  }
 }
 .sider .panel{
   background-color: #fff;

@@ -72,25 +72,23 @@ class Topics extends Component {
     }
   }
   render() {
-    const {topics, isFetching, error } = this.props
+    const {topics, error } = this.props
+    const {isFetching} = this.state
     const isEmpty = topics.length === 0;
     const errorMsg = error;
     const container = (
-      isEmpty || errorMsg ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
+      errorMsg ? <Alert bsStyle="warning" ><strong>数据加载失败，真相只有一个！</strong>请检查你的网络状态</Alert>
         : <Col className="topics" md={12}>
             {topics.map((topic, i) =>
               <TopicItem key={i} topic={topic} />
             )}
-            <div className="topics-pagination"><Pagination  prev="← 上一页" next="下一页 →" onSelect={this.handleChangePage} maxButtons={5} items={70} activePage={this.state.page} /></div>
+            {isEmpty ? '' : <div className="topics-pagination"><Pagination  prev="← 上一页" next="下一页 →" onSelect={this.handleChangePage} maxButtons={5} items={70} activePage={this.state.page} /></div>}
           </Col>
       
     );
     return (
       <Row>
-      {isFetching
-        ? <div style={{width: '80%', margin: '0 auto'}}><ProgressBar active now={45} label="努力加载中"/></div>
-        : container
-      }
+      {container}
       </Row>
     );
   }

@@ -19,12 +19,13 @@
     color: #606060 !important;
     font-weight: 400;
   }
+
 }
 @media (max-width: 768px) {
   
   .node-filter > li{
     margin: auto 5px;
-    
+    padding: 2px;
   }
   .node-filter > li > a{
     padding-left: 2px;
@@ -32,6 +33,17 @@
     text-decoration: none;
     color: #606060 !important;
     font-weight: 400;
+  }
+
+}
+@media (max-width: 375px) {
+  
+  .node-filter > li{
+    margin: auto 5px;
+    padding: 0;
+  }
+  .node-filter > li > a{
+    font-size: 12px;
   }
 }
 
