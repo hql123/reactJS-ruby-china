@@ -2,6 +2,7 @@
 ***
 Ruby China山寨版（React+redux+react-router-redux+antd+es6+redux-thunk）
 
+**Demo**: https://hql123.github.io/reactJS-ruby-china/
 ###使用技术
 ***
 * react
